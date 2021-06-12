@@ -1,0 +1,166 @@
+使用echarts
+main.js 添加
+import * as echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+固定开发格式
+option 对象内容 可以去 echarts官网查找对应的图表 https://echarts.apache.org/examples/zh/index.html
+
+<template>
+  <div class="vue-eharts">
+     <div id="pie" class="pie" ref="echart"></div>
+  </div>
+</template>
+
+
+<script>
+import { api } from '@/api'
+export default {
+  name: 'echart',
+  data() {
+    return {
+      chart: null,
+    }
+  },
+  methods: {
+    async getList() {
+      const response = await api()
+      let datas = response.data
+      this.lineDate = ....
+      
+      // 这里主要是从接口获取数据后初始化charts数据 这里获取了下面初始化对应的组建就把data设置为空
+      this.chart.setOption({
+        xAxis: {
+              data: this.lineDate
+        },
+        series: [
+          {
+            data: datas,
+          },
+        ],
+      })
+    },
+    initChart() {
+      this.chart = this.$echarts.init(this.$refs.echart)
+      var option = {
+           xAxis: {
+            data: [],
+            boundaryGap: false,
+            axisTick: {
+              show: false
+            }
+          },
+        ....
+        series: [
+          {
+            .....
+            data: [], // 这里的data要设置为空 上面函数已经获取data值
+            ....
+            },
+          },
+        ],
+      }
+      this.chart.setOption(option)
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.initChart()
+      this.getList()
+      this.resizefun = () => {
+        this.$echarts.init(this.$refs.echart).resize()
+      }
+      window.addEventListener('resize', this.resizefun)
+    })
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.resizefun)
+    this.resizefun = null
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
+  },
+}
+</script>
+
+
+<style lang="scss" scoped>
+.pie {
+  width: 100%;
+  height: 300px; // 高度也可以设置为100% 但是父类必须给一个确定的高度 不能是自适应高度
+}
+</style>
+
+
+
+  
+ 问题：
+将echarts图形写在子组件，通过父组件向子组件传递数据，但是有时候刷新页面会不显示。
+这是由于向子组件传递的数据没有实时进行监听更新导致。
+解决：利用vue中的watch对父组件传递过来的数据进行实时监听。
+
+ <div>
+    <div id="chart" class="wrap" ref="pieDom"></div>
+  </div>
+
+  props: ['data'],
+  methods: {
+    drawChart() {
+
+      let myChart = this.$echarts.init(this.$refs.pieDom)
+  
+      var option = {
+        color: this.color,
+        series: [
+          {
+            name: '资源池结算',
+            type: 'pie',
+            radius: ['30%', '53%'], // 半径
+            center: ['50%', '51%'], // 位置
+            label: {
+              position: 'inner',
+            },
+            data: this.data,
+            labelLine: {
+              normal: {
+                show: false,
+              },
+            },
+          },
+        ],
+      }
+      myChart.setOption(option)
+    },
+  },
+   mounted() {
+    // this.drawChart()
+    this.resizefun = () => {
+      this.$echarts.init(this.$refs.pieDom).resize()
+    }
+    window.addEventListener('resize', this.resizefun)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.resizefun)
+    this.resizefun = null
+  },
+   watch: {
+    data: {
+      handler(newValue) {
+        this.drawChart()
+      },
+    },
+  },
+},
+
+
+<style lang="scss" scoped>
+.wrap {
+  width: 100%;
+  height: 100%; // 高度也可以设置为100% 但是父类必须给一个确定的高度 不能是自适应高度
+}
+</style>
+
+假设这个组件间做 pie-echart 所在的父类
+
+.pie-parent { width :100%; height:200px; }

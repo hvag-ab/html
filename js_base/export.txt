@@ -1,0 +1,11 @@
+export 和 export default 的区别是
+export const a = 'hvag'
+const b = 'hvag'
+export default b
+
+import {a} from ... export 必须要加花括号指明导入那个变量 可以是多个
+import hh from ...  export default 可以指明别名 不需要花括号
+
+切记，一个js文件中，只能有一个export default； 
+但是，一个js文件中，可以有多个export。
+

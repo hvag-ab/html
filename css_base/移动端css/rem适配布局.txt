@@ -1,0 +1,64 @@
+解决 
+1.页面布局文字随屏幕大小变化而变化
+2.flex布局针对宽度布局，解决高度自适应
+
+em 字体大小(相对于父元素字体大小)
+
+<div>
+  <p></p>
+</div>
+
+div { font-size :9px;}
+p  { width:10em; height:10em; background-color:pink;} 等价于 10*9 px
+
+--------
+
+html { font-size:10px }
+div { widht :9rem;}
+p  { width:10rem; height:10rem; background-color:pink;} 等价于 10*10 px
+
+rem 字体大小（相对于html元素字体大小而变化）
+
+
+媒体查询 （@media 可以针对不同屏幕尺寸设置不同的样式）
+
+语法：
+@media mediatype and|not|only (media feature){
+    css-code
+}
+
+mediatype媒体类型 （all print打印机 screen屏幕大小） 
+and|not|only 关键字
+media feature （包括  width， min-width max-width)
+
+<=539
+实例：(在屏幕上 并且最大宽度539变成粉红色 大于就不变色 设置想要的css样式)
+@media screen and （max-width: 539px）{
+   body { background-color: pink;}
+}
+
+between 540px and 969px
+@media screen and （min-width: 540px）and （max-width：969px）{
+   body { background-color: purple;}
+}
+
+>=970
+@media screen and （min-width: 970px）{
+   body { background-color: purple;}
+}
+
+media + rem 字体大小随屏幕宽度而变化
+
+<body>
+  <div class="top">购物车</div>
+</body>
+
+  .top { height:10rem; font-size:.5rem; background-color:green;}
+
+  @media screen and （min-width: 320px）{
+   html { font-size:50px;}
+}
+
+  @media screen and （min-width: 640px）{
+   html { font-size:100px;}
+}
