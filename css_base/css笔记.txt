@@ -255,6 +255,10 @@ list-style-type属性指定列表项标记的类型：
 例：ul { list-style-image: url('s.png'); }
 
 
+width 设置 元素的宽度
+min-width 用于当元素设置的自适应宽度的时候 当可见区域宽度减少到min-width设置的宽度的时候 就不在自适应缩放 而是保持那个宽度
+
+
 精灵图
  
 字体图标
