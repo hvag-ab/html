@@ -87,19 +87,14 @@ e.currentTarget.classList.remove("show")
 //   }
 //   }
 
-使用 addEventListener() 方法，事件监听
-resize 窗口变化的时候触发
+使用 addEventListener() 方法，事件监听 
+resize 窗口变化的时候触发 格式如
 methonds:{
     listenResize () {
-      const screenWidth = document.body.clientWidth;
-      this.water.width = Math.floor(screenWidth / 187) * 187 + 'px'
-      this.getImags()
+      // 窗口大小变化的时候处理逻辑
     }
   },
   mounted () {
-    this.water.width = document.body.clientWidth + 'px'
-    this.water.height = document.body.clientHeight + 'px'
-    this.getImags()
     window.addEventListener('resize', this.listenResize)
   },
   beforeDestroy () {
