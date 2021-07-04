@@ -86,3 +86,25 @@ methods: {
 e.currentTarget.classList.remove("show")
 //   }
 //   }
+
+使用 addEventListener() 方法，事件监听
+resize 窗口变化的时候触发
+methonds:{
+    listenResize () {
+      const screenWidth = document.body.clientWidth;
+      this.water.width = Math.floor(screenWidth / 187) * 187 + 'px'
+      this.getImags()
+    }
+  },
+  mounted () {
+    this.water.width = document.body.clientWidth + 'px'
+    this.water.height = document.body.clientHeight + 'px'
+    this.getImags()
+    window.addEventListener('resize', this.listenResize)
+  },
+  beforeDestroy () {
+    window.removeEventListener("resize", this.listenResize);
+  }
+click 元素点击的时候触发
+
+document.getElementById("myBtn").addEventListener("click", function(){ alert("Hello World!"); });
