@@ -1,0 +1,75 @@
+vue 自定义指令
+
+1.全局注册指令 新建 directives/index.js 文件
+import copy from './copy'
+import longpress from './longpress'
+// 自定义指令
+const directives = {
+  copy,
+  longpress,
+}
+ 
+export default {
+  install(Vue) {
+    Object.keys(directives).forEach((key) => {
+      Vue.directive(key, directives[key])
+    })
+  },
+}
+
+在 main.js 引入并调用
+
+import Vue from 'vue'
+import Directives from './JS/directives'
+Vue.use(Directives)
+
+2.局部注册指令，
+组件中也接受一个 directives 的选项：
+
+directives: {
+  focus: {
+    // 指令的定义
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+}
+然后你可以在模板中任何元素上使用新的 v-focus property，如下：
+
+<input v-focus>
+
+指令使用方式 在你想要绑定的dom元素上 使用 v-xxxx   xxxx表示注册的指令名称
+
+指令定义函数提供了几个钩子函数（可选）：
+
+bind: 只调用一次，指令第一次绑定到元素时调用，可以定义一个在绑定时执行一次的初始化动作。
+inserted: 被绑定元素插入父节点时调用（父节点存在即可调用，不必存在于 document 中）。
+update: 被绑定元素所在的模板更新时调用，而不论绑定值是否变化。通过比较更新前后的绑定值。
+componentUpdated: 被绑定元素所在模板完成一次更新周期时调用。
+unbind: 只调用一次， 指令与元素解绑时调用。
+
+定义指令模板
+
+export const mydirective = {
+    // 初始化指令
+    bind (el, binding, vnode) {},
+    inserted(el, binding) {},
+    update (el, binding) { },
+    componentUpdated(el, binding) {},
+    unbind (el, binding) {},
+}
+
+指令钩子函数会被传入以下参数：
+
+el：指令所绑定的元素，可以用来直接操作 DOM。
+binding：一个对象，包含以下 property：
+    name：指令名，不包括 v- 前缀。
+    value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
+    oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+    expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
+    arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
+    modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。
+vnode：Vue 编译生成的虚拟节点。移步 VNode API 来了解更多详情。
+oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
+除了 el 之外，其它参数都应该是只读的，切勿进行修改。如果需要在钩子之间共享数据，建议通过元素的 dataset 来进行。
+
