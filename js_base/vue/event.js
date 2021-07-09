@@ -117,6 +117,12 @@ onunload和onbeforeunload都是在页面刷新和关闭前的动作，但是onbe
 页面关闭：onbeforeunload →onunload
 页面刷新：onbeforeunload →onunload→onload
 
+data() {
+  return {
+    _beforeUnload_time:0, //保存界面刷新时先执行的时间
+    _gap_time:0 //保存浏览器刷新或关闭时执行的时间
+}
+
 mounted () {
     window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
     window.addEventListener('unload', e => this.unloadHandler(e))
