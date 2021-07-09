@@ -159,4 +159,43 @@ mounted () {
     }
   }
 
+监听刷新和关闭窗口
+mounted() {
+  window.addEventListener('beforeunload', e => {
+      this.updateHandler(e)
+    })
+  }
+ destroyed () {
+    // 移除事件监听可能要放在最前面 如果有多个移除操作的话
+        window.removeEventListener('beforeunload', e => {
+      this.updateHandler(e)
+    })
+    }
+
+methods:{
+    updateHandler(e) {
+      // debugger
+      e.returnValue = '您是否确认离开此页面-您输入的数据可能不会被保存'
+      this._beforeUnload_time = new Date().getTime()
+      e = e || window.event
+      if (e) {
+        e.returnValue = '您是否确认离开此页面-您输入的数据可能不会被保存'
+      }
+      this.cancelFunc()
+    },
+     async cancelFunc() {
+        const params = {
+          name: 'aa',
+          _csrf: sessionStorage._csrf
+        }
+        await this.cancelOrder(params)
+    },
+    async cancelOrder(params) {
+      // const response = await API.cancelOrderAPI(params) // 请求后台接口
+      // console.log('同步请求', response.data)
+      console.log('xxxx')
+    },
+  }
+
+
 
