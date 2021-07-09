@@ -103,3 +103,54 @@ methonds:{
 click 元素点击的时候触发
 
 document.getElementById("myBtn").addEventListener("click", function(){ alert("Hello World!"); });
+
+窗口关闭和更新监听
+window.onload事件 设置页面加载时执行的动作，即进入页面的时候执行的动作。
+
+window.onunload 已经从服务器上读到了需要加载的新的页面，在即将替换掉当前页面时调用，一般用于设置当离开页面以后执行的动作。
+
+window.onbeforeunload 是正要去服务器读取新的页面时调用，此时还没开始读取，简单来说就是 在离开页面前的，一般用做提醒问你是不是要离开这个页面。
+
+onunload和onbeforeunload都是在页面刷新和关闭前的动作，但是onbeforeunload是先于onunload的，并且 onunload是无法阻止页面的更新和关闭的。而 Onbeforeunload 可以做到
+
+页面加载：onload
+页面关闭：onbeforeunload →onunload
+页面刷新：onbeforeunload →onunload→onload
+
+mounted () {
+    window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.addEventListener('unload', e => this.unloadHandler(e))
+  },
+  destroyed () {
+    window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.removeEventListener('unload', e => this.unloadHandler(e))
+  },
+  methods: {
+    beforeunloadHandler (e) {
+      // debugger
+      this._beforeUnload_time = new Date().getTime()
+      console.log('this._beforeUnload_time：', this._beforeUnload_time)
+      e = e || window.event
+      if (e) {
+        e.returnValue = '关闭提示'
+      }
+      // debugger
+      return '关闭提示'
+    },
+    async unloadHandler () {
+      console.log('this._beforeUnload_time2：', this._beforeUnload_time)
+      this._gap_time = new Date().getTime() - this._beforeUnload_time
+      console.log('this._gap_time：', this._gap_time)
+      // 判断是窗口关闭还是刷新
+      if (this._gap_time <= 5) {
+        // debugger
+        // 如果是登录状态，关闭窗口前，移除用户
+        //await xxx().then(res=>{})
+        }
+      } else {
+        // debugger
+      }
+    }
+  }
+
+
