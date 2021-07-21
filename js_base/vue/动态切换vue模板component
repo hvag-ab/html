@@ -1,5 +1,5 @@
 <div id="app" v-cloak>
-        <component :is="currentView"></component>
+        <component :is="currentView" :value="value"></component> # 动态组件也能传递数据给子组件
         <button @click="handleChangeView('A')">A</button>
         <button @click="handleChangeView('B')">B</button>
         <button @click="handleChangeView('C')" style="color:green">C</button>
@@ -13,8 +13,9 @@
             components:{
                 comA:{
                     template:`
-                        <div>组件A</div>
-                    `
+                        <div>组件A {{ value }}</div>
+                    `,
+                    props : ['value']
                 },
                 comB:{
                     template:`
@@ -28,7 +29,8 @@
                 }
             },
             data:{
-                currentView:'comA'
+                currentView:'comA',
+                value:''
             },
             methods:{
                 handleChangeView:function(component){
