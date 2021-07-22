@@ -459,3 +459,17 @@ async function token(){
     })
   }
 ```
+
+```
+async函数返回的是一个Promise对象，可以使用then函数添加回调函数
+例如在vue中 mounted中 执行两个异步函数 如果b函数依赖a函数返回结果 
+
+async get_data() {...}
+
+  mounted(){
+      this.get_data().then(res=>{
+          this.get_filters()
+      })
+      
+  }
+```
