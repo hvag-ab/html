@@ -310,6 +310,15 @@ justify-content:center;
     display: inline-block;
     vertical-align: middle;
   }
+  
+  .parent {
+  position: relative;
+}
+.child {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); 
+}
 
 transition 的用法
 
