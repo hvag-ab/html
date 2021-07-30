@@ -300,8 +300,16 @@ align-items：center;
 justify-content:center;
 
 第三种
-display:inner-block;
-vertical-align: middle;
+.parent:before {
+    content: " ";
+    display: inline-block;
+    height: 100%;
+    vertical-algin: middle;
+  }
+  .parent center-element {
+    display: inline-block;
+    vertical-align: middle;
+  }
 
 transition 的用法
 
