@@ -48,3 +48,5 @@
   <component v-bind:is="currentTabComponent"></component>
 </keep-alive>
 
+// 如果子组件需要调用父组件方法 可以使用this.$parent.父组件定义的方法()   不能使用this.$emit  因为 this.$emit必须在组件上定义方法例如子组件上定义@hvag="hvag"才能调用 如果没有定义 那么就不能使用
+
