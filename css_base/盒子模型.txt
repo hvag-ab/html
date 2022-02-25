@@ -177,3 +177,47 @@ inherit：规定应从父元素继承box-sizing属性的值;
 3.overflow:hidden
 
 行内元素 只设置左右的外边距  上下的外边距不存在  可以转化为块级元素or行内块元素
+
+嵌套盒子
+css中子元素设置margin-top为什么影响了父元素
+<style type="text/css"> 
+    *{
+        margin: 0px; padding: 0px; 
+    }
+    .show{
+        margin: 0px auto;
+        width: 200px;
+        height: 100px;
+        background-color: #999999;
+    }
+    .show h2{
+        margin-top: 50px;
+        cursor: pointer;
+    }
+</style>
+ 
+<body>
+    <div class="show">
+       <h2>crystal</h2>
+    </div>
+</body>
+
+两个div，子元素div设置了margin-top后，发现并没有跟想象的一样，而发现父元素产生了间距。
+
+
+
+原理：margin折叠
+毗邻：同级或者嵌套盒子，并且他们直接没有非空内容，padding 或者border 分隔
+毗邻的盒子 margin将会合并为一个margin共享，  意思是子盒子的margin会影响父盒子的margin
+
+
+因为嵌套也属于毗邻，所以在样式表中优先级更高子元素的margin会覆盖外层父元素定义的margin。
+
+父元素的第一个子元素的上边距margin-top如果碰不到有效的border或者padding.就会不断一层一层的找自己 “领导”(父元素，祖先元素)的麻烦。只要给领导设置个有效的 border或者padding就可以有效的管制这个目无领导的margin防止它越级，假传圣旨，把自己的margin当领导的margin执行。
+
+解决办法：
+
+1、父元素或者子元素使用浮动或者绝对定位。 （如果只是父元素使用相对定位 也会出现这种情况）
+2、父级设置overflow:hidden
+3、父级设置padding（破坏非空白的折叠条件）
+4、父级设置border
