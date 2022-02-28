@@ -384,3 +384,8 @@ test.onclick = function(){
     },3000);
 }
 
+对于div,p等块级元素：正常文字的换行(亚洲文字和非亚洲文字)元素拥有默认的white-space:normal,当定义的宽度之后自动换行。然后对于纯字母和纯数字则不行：
+
+解决办法是：
+使用word-wrap:break-word ;或者word-break:break-all;实现强制断行.
+
